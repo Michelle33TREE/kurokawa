@@ -1,28 +1,197 @@
+<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Location-based AR.js demo</title>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-    <!-- AR.jsのCDN URLを安定版に変更 -->
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-  </head>
+    <head>
+        <meta charset="UTF-8">
+        <title>ログインページ</title>
+        <style>    /* リセットスタイル 左端の空白を削除 */
+        body {
+            margin: 0;
+            /*font-weight: bold;*/
+            font-family: "Yu Gothic", "YuGothic", "游ゴシック", "Meiryo", sans-serif; /* Yu-Gothicフォントの指定 */
+        }
 
-  <body style="margin: 0; overflow: hidden;">
-    <a-scene
-      vr-mode-ui="enabled: false"
-      embedded
-      arjs="sourceType: webcam; debugUIEnabled: false;"
-    >
-      <a-text
-        value="This content will always face you."
-        look-at="[gps-camera]"
-        scale="50 50 50"
-        gps-entity-place="latitude: 35.63925039974462; longitude: 139.52272498558597;"
-      ></a-text>
-      <a-camera gps-camera rotation-reader minDistance="0" maxDistance="100000"></a-camera>
-    </a-scene>
-  </body>
+        /* メニューバーのスタイル */
+        .menu-list {
+            list-style: none;
+            margin: 0;
+            padding: 0; /* 余分なスペースを取り除くためにpaddingを0に設定 */
+            background-color: #333; /* メニューバーの背景色 */
+            position: fixed;
+            top: 0;
+            /*height: 5%;
+            /*left: 0; /* 追加: 左端に寄せるためにleftを0に設定 */
+            width: 100%;
+            z-index: 9999; /* Higher z-index value to bring it to the front */
+        }
+
+        .menu-list li {
+            display: inline-block;
+        }
+
+        /* メニューバーのフォント変更 */
+        .menu-list li a {
+            font-weight: bold; /* 文字を太くする */
+            display: block;
+            padding: 10px 12px;
+            text-decoration: none;
+            background: linear-gradient(90deg, #ffffff 10%, #c0c0c0); /* グラデーションの色を変更 */
+            -webkit-background-clip: text; /* グラデーションの適用範囲 */
+            background-clip: text; /* グラデーションの適用範囲 */
+            color: transparent; /* テキストカラーを透明に */
+            transition: background-color 0.3s, color 0.3s; /* マウスオーバー時のアニメーション */
+        }
+
+        .menu-list li a:hover {
+            /*background-color: #999; /* マウスオーバー時の背景色 */
+            color: #fff; /* マウスオーバー時のテキスト色 */
+        }
+
+        /* Homeのフォントサイズ変更 */
+        .menu-list li:nth-child(1) a {
+            font-size: 24px; /* フォントサイズを調整する値に変更してください */
+        }
+        
+        .menu-list li:nth-child(2) a {
+            font-size: 20px; /* フォントサイズを調整する値に変更してください */
+        }
+
+        .menu-list li:nth-child(3) a {
+            font-size: 20px; /* フォントサイズを調整する値に変更してください */
+        }
+
+        .menu-list li:nth-child(4) a {
+            font-size: 20px; /* フォントサイズを調整する値に変更してください */
+        }
+
+        .menu-list li:nth-child(5) a {
+            font-size: 20px; /* フォントサイズを調整する値に変更してください */
+        }
+        
+        .menu-list li:nth-child(6) a {
+            font-size: 20px; /* フォントサイズを調整する値に変更してください */
+        }
+
+        .menu-list li:nth-child(7) a {
+            font-size: 16px; /* フォントサイズを調整する値に変更してください */
+        }
+
+        /* フッターのスタイル */
+        footer {
+            text-align: center;
+            padding: 6px;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: "Yu-Gothic UI", sans-serif;
+            font-size: 11px;
+            /*position: ;*/
+            bottom: 0;
+            width: 100%;
+            font-weight:bold;
+        }
+
+        /* 追加: 中央配置用のスタイル */
+        /* 中央配置用のスタイル */
+        .center-container {
+            /*height: 100%;*/
+            margin-top:10%; 
+            display: flex;
+            flex-direction: column; /* 縦方向に並べる */
+            justify-content: center;
+            align-items: center;
+            margin-left: 15%;
+            margin-right:15%;
+            /*height: 100vh;*/
+        }    
+
+        .logout-content {
+            text-align: center;
+            padding: 40px;
+            width: 50%; /* ログイン画面の幅を指定 */
+            /*height: 50%;*/
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            border-image: linear-gradient(45deg, #666, #c0c0c0) 2;
+        }
+        
+                /* IDとパスワードの入力欄のデザインを変更 */
+        input[type="text"],
+        input[type="password"] {
+            width: 80%; /* 入力欄の幅を100%にする */
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+        /* ログインボタンと新規登録ボタンのスタイルを変更 */
+        input[type="submit"] {
+            font-weight: bold; /* 文字を太くする */
+            padding: 8px 20px;
+            border-radius: 5px;
+            background-color: #20b2aa; /* ボタンの背景色を変更 */
+            color: white; /* ボタンのテキスト色を白に設定 */
+            border: none; /* ボタンの枠線を削除 */
+            cursor: pointer; /* マウスオーバー時にカーソルをポインタに変更 */
+        }
+
+                /* 新規登録ボタンのスタイルを変更 */
+        form[action="SignUp.php"] input[type="submit"] {
+            background-color: #ff8c00; /* ボタンの背景色をオレンジに変更 */
+        }
+
+        
+
+        /* ログインボタンと新規登録ボタンのホバー時のスタイルを追加 */
+        input[type="submit"]:hover {
+            opacity: 0.9; /* マウスオーバー時にボタンの透明度を下げて少し薄くする */
+        }
+    </style>
+</head>
+
+    <body> 
+
+    <nav>
+        <ul class="menu-list">
+            <li><a href="index.php">下見支援システム</a></li>
+        </ul>
+    </nav>
+ 
+    <div class="center-container">
+        <div class="logout-content">
+        <h1>ログイン画面</h1>
+        <form id="loginForm" name="loginForm" action="" method="POST">
+            <fieldset>
+                <legend>アカウント作成済みの方はこちら</legend>
+                <div style="font-size:20px; color: #ff0000"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></font></div>
+                <label for="userid">ユーザーID</label>
+                <br>
+                <input type="text" id="userid" name="userid" placeholder="ユーザーIDを入力" value="<?php if (!empty($_POST["userid"])) {echo htmlspecialchars($_POST["userid"], ENT_QUOTES);} ?>">
+                <br>
+                <label for="password">パスワード</label>
+                <br><input type="password" id="password" name="password" value="" placeholder="パスワードを入力">
+                <br>
+                <input type="submit" id="login" name="login" value="ログイン">
+            </fieldset>
+        </form>
+        <br>
+
+        <form action="SignUp.php">
+                      
+            <div style="color: black">アカウントがない方はこちら</div>
+                <input type="submit" value="新規登録">
+            
+        </form>
+        </div>
+       
+        <div style="margin-top:50px ;margin-bottom:20px;font-weight:bold;font-size:12px;text-align:center;"> Copyright(c) 2023 山本佳世子研究室 All Rights Reserved.</div>
+
+    </div>
+
+        <!-- フッターの表示 -->
+  
+    </body>
+
 </html>
-

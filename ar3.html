@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Location-based AR.js demo</title>
+
+    <!-- A-Frameライブラリを読み込む -->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+
+    <!-- Look-atコンポーネントを読み込む -->
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+
+    <!-- 安定版のAR.jsライブラリをCDNから読み込む -->
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+  </head>
+
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene
+      vr-mode-ui="enabled: false" <!-- VRモードUIを無効化 -->
+      embedded                    <!-- ページに埋め込み -->
+      arjs="sourceType: webcam; debugUIEnabled: false;" <!-- AR.jsの設定、Webカメラをソースに使用 -->
+    >
+      <!-- GPSベースで表示されるテキスト -->
+      <a-text
+        value="This content will always face you."   <!-- 表示するテキスト -->
+        look-at="[gps-camera]"                        <!-- カメラの方向に向かう -->
+        scale="50 50 50"                              <!-- テキストのサイズを指定 -->
+        gps-entity-place="latitude: 35.63925039974462; longitude: 139.52272498558597;" <!-- 位置を指定 -->
+      ></a-text>
+
+      <!-- GPSカメラを使用し、ユーザーの位置情報に基づいて回転 -->
+      <a-camera gps-camera rotation-reader minDistance="0" maxDistance="100000"></a-camera>
+    </a-scene>
+
+    <!-- GPS位置の更新イベントをコンソールにログ出力 -->
+    <script>
+      document.querySelector('a-camera').addEventListener('gps-camera-update-position', (event) => {
+        console.log('New position:', event.detail.position);  // 新しい位置をコンソールに出力
+      });
+    </script>
+  </body>
+</html>

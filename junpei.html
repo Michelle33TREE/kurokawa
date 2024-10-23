@@ -5,10 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Location-based AR.js demo</title>
+
     <!-- バージョンを固定した依存関係 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+
     <script>
       // 方位計算用関数
       function calculateBearing(lat1, lon1, lat2, lon2) {
@@ -58,6 +61,7 @@
         }
       });
     </script>
+
     <style>
       #debug {
         position: fixed;
@@ -81,8 +85,10 @@
       }
     </style>
   </head>
+
   <body style="margin: 0; overflow: hidden;">
     <div id="debug">読み込み中...</div>
+
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
@@ -111,6 +117,7 @@
     <button class="ar-button" id="start-button">AR開始</button>
 
     <script>
+      console.log("0")
       window.onload = () => {
         const debug = document.querySelector('#debug');
         const startButton = document.querySelector('#start-button');
@@ -121,7 +128,7 @@
             if ("geolocation" in navigator) {
               navigator.geolocation.getCurrentPosition(
                 position => {
-                  debug.textContent = 'GPS準備完了2';
+                  debug.textContent = 'GPS準備完了';
                   resolve(position);
                 },
                 error => {

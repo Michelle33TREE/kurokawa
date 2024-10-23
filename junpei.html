@@ -29,6 +29,9 @@
         return (bearing + 360) % 360;  // 0-360度に変換
       }
 
+      // 手動で degToRad を定義
+      const degToRad = (degrees) => degrees * Math.PI / 180;
+
       // カスタムコンポーネントの登録
       AFRAME.registerComponent('distance-check', {
         init: function() {
@@ -117,7 +120,6 @@
     <button class="ar-button" id="start-button">AR開始</button>
 
     <script>
-      console.log("0")
       window.onload = () => {
         const debug = document.querySelector('#debug');
         const startButton = document.querySelector('#start-button');

@@ -22,7 +22,7 @@
   </head>
 
   <body style="margin: 0; overflow: hidden;">
-    <div id="debug">
+    <div id="debug"></div>
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
@@ -35,22 +35,24 @@
       ></a-box>
       <a-text
         id="text"
-        value=""
+        value="待機中..."
         look-at="[gps-camera]"
         scale="30 30 30"
         position="0 55 0"
-        scale="50 50 50"
         gps-entity-place="latitude: 35.655131122002594; longitude: 139.54357446812347;"
       ></a-text>
-      <a-camera gps-camera rotation-reader> </a-camera>
+      <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
-</div>
+
     <script>
       window.addEventListener('load', () => {
         const text = document.getElementById('text');
-        text.addEventListener('gps-entity-place-update-positon', (event) => {
-          document.getElementById('debug').textContent = `あと${event.detail.distance}m`;
-          text.setAttribute('value', text.getAttribute('distanceMsg') + ' left');
+        text.setAttribute('distanceMsg', 'あと'); // この行でdistanceMsg属性を設定
+
+        text.addEventListener('gps-entity-place-update-position', (event) => {
+          const distance = event.detail.distance; // 距離を取得
+          document.getElementById('debug').textContent = `あと ${distance.toFixed(2)}m`;
+          text.setAttribute('value', `あと ${distance.toFixed(2)}m`);
         });
       });
     </script>

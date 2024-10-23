@@ -10,6 +10,22 @@
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
     <script>
+      // 方位計算用関数
+      function calculateBearing(lat1, lon1, lat2, lon2) {
+        const toRadians = degrees => degrees * Math.PI / 180;
+        const toDegrees = radians => radians * 180 / Math.PI;
+
+        const dLon = toRadians(lon2 - lon1);
+        const lat1Rad = toRadians(lat1);
+        const lat2Rad = toRadians(lat2);
+
+        const y = Math.sin(dLon) * Math.cos(lat2Rad);
+        const x = Math.cos(lat1Rad) * Math.sin(lat2Rad) -
+                  Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLon);
+        const bearing = toDegrees(Math.atan2(y, x));
+        return (bearing + 360) % 360;  // 0-360度に変換
+      }
+
       // カスタムコンポーネントの登録
       AFRAME.registerComponent('distance-check', {
         init: function() {
@@ -17,12 +33,27 @@
           this.debugEl = document.querySelector('#debug');
         },
         tick: function() {
-          if (this.el.getAttribute('gps-camera').position) {
-            const distance = this.el.getAttribute('gps-camera').distance;
-            if (distance) {
-              this.debugEl.textContent = `あと ${distance.toFixed(2)}m`;
-              this.target.setAttribute('value', `あと ${distance.toFixed(2)}m`);
-            }
+          const gpsCamera = this.el.components['gps-camera'];
+          if (gpsCamera && gpsCamera.currentCoords) {
+            const lat = gpsCamera.currentCoords.latitude;
+            const lon = gpsCamera.currentCoords.longitude;
+
+            // 目的地
+            const targetLat = 35.655131122002594;
+            const targetLon = 139.54357446812347;
+
+            // 距離計算
+            const distance = gpsCamera.computeDistanceMeters(
+              {latitude: lat, longitude: lon},
+              {latitude: targetLat, longitude: targetLon}
+            );
+
+            // 方位計算
+            const bearing = calculateBearing(lat, lon, targetLat, targetLon);
+
+            // デバッグ情報更新
+            this.debugEl.textContent = `あと ${distance.toFixed(2)}m / 方位: ${bearing.toFixed(2)}度`;
+            this.target.setAttribute('value', `あと ${distance.toFixed(2)}m / 方位: ${bearing.toFixed(2)}度`);
           }
         }
       });

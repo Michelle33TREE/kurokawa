@@ -3,55 +3,33 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Location-based AR.js demo</title>
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/geolib@3.3.4/lib/index.min.js"></script>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://www.unpkg.com/@ar-js-org/ar.js@3.4.5/aframe/build/aframe-ar.js"></script>
+    <script src="./js/aframe-html-shader.min.js"></script>
+    <script src="./js/html2canvas.min.js"></script>
     <style>
-      #debug {
-        position: fixed;
-        z-index: 10000;
-        background-color: #fff;
-        padding: 10px;
-        top: 0;
-        left: 0;
-        display: block;
-      }
+      /* 日本語フォントの読み込み */
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
     </style>
   </head>
 
   <body style="margin: 0; overflow: hidden;">
-    <div id="debug"></div>
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
     >
-      <a-box
-        material="color: red"
-        gps-entity-place="latitude: 35.655131122002594; longitude: 139.54357446812347;"
-        scale="15 15 15"
-      ></a-box>
-      <a-text
-        id="text"
-        value=""
+      <!-- 日本語対応テキスト -->
+      <a-entity
+        text="value: こんにちは、ARの世界へようこそ！; align: center; font: https://cdn.aframe.io/fonts/mozillavr.fnt; color: red"
         look-at="[gps-camera]"
-        scale="30 30 30"
-        position="0 55 0"
-        scale="50 50 50"
-        gps-entity-place="latitude: 35.641742479919486; longitude: 139.52038687123428;"
-      ></a-text>
-      <a-camera gps-camera rotation-reader> </a-camera>
+        scale="20 20 20"
+        gps-entity-place="latitude: 35.64172082943811; longitude: 139.5203249170314;"
+      ></a-entity>
+
+      <!-- GPS対応カメラ -->
+      <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
-    <script>
-      window.addEventListener('load', () => {
-        const text = document.getElementById('text');
-        text.addEventListener('gps-entity-place-update-positon', (event) => {
-          document.getElementById('debug').textContent = `あと${event.detail.distance}m`;
-          text.setAttribute('value', text.getAttribute('distanceMsg') + ' left');
-        });
-      });
-    </script>
   </body>
 </html>

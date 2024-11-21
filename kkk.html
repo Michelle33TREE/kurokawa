@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Location-based AR.js demo</title>
+    <script type="text/javascript" src="https://aframe.io/releases/1.3.0/aframe.min.js" ></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script type="text/javascript" src="https://www.unpkg.com/@ar-js-org/ar.js@3.4.5/three.js/build/ar-threex-location-only.js" ></script>
+    <script type="text/javascript" src="https://www.unpkg.com/@ar-js-org/ar.js@3.4.5/aframe/build/aframe-ar.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Canvasの作成
+        const canvas = document.createElement("canvas");
+        canvas.width = 512; // 解像度を指定
+        canvas.height = 256;
+
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "white"; // 背景色
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "black"; // テキスト色
+        ctx.font = "bold 48px 'Noto Sans JP', sans-serif"; // フォントとサイズ
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("矢野口駅", canvas.width / 2, canvas.height / 2);
+
+        // CanvasをBase64に変換
+        const base64Image = canvas.toDataURL();
+
+        // <a-image>要素にsrcを設定
+        const scene = document.querySelector("a-scene");
+        const aImage = document.createElement("a-image");
+        aImage.setAttribute("src", base64Image);
+        aImage.setAttribute("gps-entity-place", "latitude: 35.64172082943811; longitude: 139.5203249170314;");
+        aImage.setAttribute("look-at", "[gps-camera]");
+        aImage.setAttribute("scale", "20 10 1");
+        scene.appendChild(aImage);
+      });
+    </script>
+  </head>
+
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+    >
+      <a-camera gps-camera rotation-reader> </a-camera>
+    </a-scene>
+  </body>
+</html>

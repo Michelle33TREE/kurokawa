@@ -12,7 +12,7 @@
         // Canvasの作成
         const canvas = document.createElement("canvas");
         canvas.width = 2048; // 解像度を指定
-        canvas.height = 2048;
+        canvas.height = 1024;
 
         const ctx = canvas.getContext("2d");
         ctx.fillStyle = "white"; // 背景色
@@ -32,7 +32,7 @@
         aImage.setAttribute("src", base64Image);
         aImage.setAttribute("gps-entity-place", "latitude: 35.64172082943811; longitude: 139.5203249170314;");
         aImage.setAttribute("look-at", "[gps-camera]");
-        aImage.setAttribute("scale", "80 80 1");
+        aImage.setAttribute("scale", "120 60 1");
         scene.appendChild(aImage);
       });
     </script>
